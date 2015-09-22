@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# (C) Copyright 2015 Hewlett Packard Enterprise Development LP.
+# (C) Copyright 2015 Hewlett Packard Enterprise Development LP
 # All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -44,7 +44,7 @@ import ovs.unixctl.server
 idl = None
 
 # Tables definitions
-OPEN_VSWITCH_TABLE = 'Open_vSwitch'
+SYSTEM_TABLE = 'System'
 VRF_TABLE = 'VRF'
 DHCP_SERVER_TABLE = 'DHCP_Server'
 DHCP_SERVER_RANGE_TABLE = 'DHCPSrv_Range'
@@ -52,10 +52,10 @@ DHCP_SERVER_STATIC_HOST_TABLE = 'DHCPSrv_Static_Host'
 DHCP_SERVER_OPTION_TABLE = 'DHCPSrv_Option'
 DHCP_SERVER_MATCH_TABLE = 'DHCPSrv_Match'
 
-# Columns definitions - Open_vSwitch Table
-OPEN_VSWITCH_VRFS = 'vrfs'
-OPEN_VSWITCH_CUR_CFG = 'cur_cfg'
-OPEN_VSWITCH_OTHER_CONFIG = 'other_config'
+# Columns definitions - System Table
+SYSTEM_VRFS = 'vrfs'
+SYSTEM_CUR_CFG = 'cur_cfg'
+SYSTEM_OTHER_CONFIG = 'other_config'
 
 # Columns definitions - VRF Table
 VRF_NAME = 'name'
@@ -119,12 +119,12 @@ def unixctl_exit(conn, unused_argv, unused_aux):
 def db_get_system_status(data):
     '''
     Checks if the system initialization is completed.
-    If Open_vSwitch:cur_cfg > 0:
+    If System:cur_cfg > 0:
         configuration completed: return True
     else:
         return False
     '''
-    for ovs_rec in data[OPEN_VSWITCH_TABLE].rows.itervalues():
+    for ovs_rec in data[SYSTEM_TABLE].rows.itervalues():
         if ovs_rec.cur_cfg:
             if ovs_rec.cur_cfg == 0:
                 return False
@@ -159,9 +159,9 @@ def dhcp_tftp_init(remote):
     global idl
 
     schema_helper = ovs.db.idl.SchemaHelper(location=ovs_schema)
-    schema_helper.register_columns(OPEN_VSWITCH_TABLE, \
-                                [OPEN_VSWITCH_VRFS, OPEN_VSWITCH_CUR_CFG, \
-                                 OPEN_VSWITCH_OTHER_CONFIG])
+    schema_helper.register_columns(SYSTEM_TABLE, \
+                                [SYSTEM_VRFS, SYSTEM_CUR_CFG, \
+                                 SYSTEM_OTHER_CONFIG])
     schema_helper.register_columns(VRF_TABLE, \
                                 [VRF_NAME, VRF_DHCP_SERVER, \
                                  VRF_OTHER_CONFIG])
@@ -361,7 +361,7 @@ def dhcp_tftp_get_config():
         # print dnsmasq_command
 
     # Get the tftp server config
-    for ovs_rec in idl.tables[OPEN_VSWITCH_TABLE].rows.itervalues():
+    for ovs_rec in idl.tables[SYSTEM_TABLE].rows.itervalues():
         if ovs_rec.other_config and ovs_rec.other_config is not None:
             for key,value in ovs_rec.other_config.iteritems():
                 if key == 'tftp_server_enable':
