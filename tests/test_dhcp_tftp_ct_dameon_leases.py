@@ -19,20 +19,17 @@
 
 import os
 import time
-from halonvsi.docker import *
-from halonvsi.halon import *
+from opsvsi.docker import *
+from opsvsi.opsvsitest import *
 
-class dhcp_tftpCLItest(HalonTest):
+class dhcp_tftpDaemonLeasestest(OpsVsiTest):
     def setupNet(self):
-        self.net = Mininet(
-            topo=SingleSwitchTopo(k=0, hopts=self.getHostOpts(),
-                                  sopts=self.getSwitchOpts()),
-            switch=HalonSwitch,
-            host=HalonHost,
-            link=HalonLink,
-            controller=None,
-            build=True
-            )
+        host_opts = self.getHostOpts()
+        switch_opts = self.getSwitchOpts()
+        dhcp_topo = SingleSwitchTopo(k=0, hopts=host_opts, sopts=switch_opts)
+        self.net = Mininet(dhcp_topo, switch=VsiOpenSwitch,
+                       host=Host, link=OpsVsiLink,
+                       controller=None, build=True)
 
     def test_dhcp_tftp_add_range(self):
         info("\n########## Test to add DHCP dynamic configurations \
@@ -912,7 +909,7 @@ class Test_vtysh_dhcp_tftp:
 
         # Create a test topology
 
-        Test_vtysh_dhcp_tftp.test = dhcp_tftpCLItest()
+        Test_vtysh_dhcp_tftp.test = dhcp_tftpDaemonLeasestest()
 
     def teardown_class(cls):
 
