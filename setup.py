@@ -16,10 +16,10 @@
 
 from setuptools import setup
 setup(
-    name='dhcp_tftp',
+    name='ops_dhcp_tftp',
     version='1.0',
-    py_modules=['dhcp_tftp', 'dhcp_leases', 'dhcp_lease_db'],
+    py_modules=['ops_dhcp_tftp', 'dhcp_leases', 'dhcp_lease_db'],
     entry_points={
-        'console_scripts': ['dhcp_tftp = dhcp_tftp:main', 'dhcp_leases = dhcp_leases:main']
+        'console_scripts': ['ops_dhcp_tftp = ops_dhcp_tftp:main', 'dhcp_leases = dhcp_leases:main']
     }
 )
