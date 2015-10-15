@@ -110,10 +110,12 @@ dnsmasq_dhcp_host_option = '--dhcp-host='
 dnsmasq_dhcp_option_arg = '--dhcp-option='
 dnsmasq_dhcp_boot_option = '--dhcp-boot='
 
+
 def unixctl_exit(conn, unused_argv, unused_aux):
     global exiting
     exiting = True
     conn.reply(None)
+
 
 # ------------------ db_get_system_status() ----------------
 def db_get_system_status(data):
@@ -133,6 +135,7 @@ def db_get_system_status(data):
 
     return False
 
+
 # ------------------ system_is_configured() ----------------
 def system_is_configured():
     global idl
@@ -142,6 +145,7 @@ def system_is_configured():
         return False
 
     return True
+
 
 # ------------------ terminate() ----------------
 def terminate():
@@ -159,12 +163,12 @@ def dhcp_tftp_init(remote):
     global idl
 
     schema_helper = ovs.db.idl.SchemaHelper(location=ovs_schema)
-    schema_helper.register_columns(SYSTEM_TABLE, \
-                                [SYSTEM_VRFS, SYSTEM_CUR_CFG, \
-                                 SYSTEM_OTHER_CONFIG])
-    schema_helper.register_columns(VRF_TABLE, \
-                                [VRF_NAME, VRF_DHCP_SERVER, \
-                                 VRF_OTHER_CONFIG])
+    schema_helper.register_columns(SYSTEM_TABLE,
+                                   [SYSTEM_VRFS, SYSTEM_CUR_CFG,
+                                    SYSTEM_OTHER_CONFIG])
+    schema_helper.register_columns(VRF_TABLE,
+                                   [VRF_NAME, VRF_DHCP_SERVER,
+                                    VRF_OTHER_CONFIG])
     schema_helper.register_table(DHCP_SERVER_TABLE)
     schema_helper.register_table(DHCP_SERVER_RANGE_TABLE)
     schema_helper.register_table(DHCP_SERVER_STATIC_HOST_TABLE)
@@ -196,8 +200,8 @@ def dhcp_tftp_get_config():
     dhcp_boot = []
 
     dnsmasq_command = dnsmasq_default_command
-    vlog.dbg("dhcp_tftp_debug - dnsmasq_command(1) %s " \
-                     % (dnsmasq_command))
+    vlog.dbg("dhcp_tftp_debug - dnsmasq_command(1) %s "
+             % (dnsmasq_command))
 
     # Get the dhcp server ranges config first
     for ovs_rec in idl.tables[DHCP_SERVER_RANGE_TABLE].rows.itervalues():
@@ -240,11 +244,11 @@ def dhcp_tftp_get_config():
                 range_options = range_options + ',' + \
                                 str(ovs_rec.lease_duration[0]) + 'm'
 
-        vlog.dbg("dhcp_tftp_debug - dhcp_range %s " \
-                     % (range_options))
+        vlog.dbg("dhcp_tftp_debug - dhcp_range %s "
+                 % (range_options))
         dnsmasq_command = dnsmasq_command + ' --dhcp-range=' + range_options
-        vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s " \
-                     % (dnsmasq_command))
+        vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s "
+                 % (dnsmasq_command))
         # print dnsmasq_command
 
     # Get the dhcp server static hosts config
@@ -279,12 +283,12 @@ def dhcp_tftp_get_config():
                 static_host_options = static_host_options + ',' + \
                                       str(ovs_rec.lease_duration[0]) + 'm'
 
-        vlog.dbg("dhcp_tftp_debug - dhcp_host %s " \
-                     % (static_host_options))
+        vlog.dbg("dhcp_tftp_debug - dhcp_host %s "
+                 % (static_host_options))
         dnsmasq_command = dnsmasq_command + ' --dhcp-host=' + \
-                          static_host_options
-        vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s " \
-                     % (dnsmasq_command))
+            static_host_options
+        vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s "
+                 % (dnsmasq_command))
         # print dnsmasq_command
 
     # Get the dhcp server options config
@@ -311,11 +315,11 @@ def dhcp_tftp_get_config():
         if ovs_rec.option_value and ovs_rec.option_value is not None:
             dhcp_options = dhcp_options + ',' + ovs_rec.option_value[0]
 
-        vlog.dbg("dhcp_tftp_debug - dhcp_option %s " \
-                     % (dhcp_options))
+        vlog.dbg("dhcp_tftp_debug - dhcp_option %s "
+                 % (dhcp_options))
         dnsmasq_command = dnsmasq_command + ' --dhcp-option=' + dhcp_options
-        vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s " \
-                     % (dnsmasq_command))
+        vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s "
+                 % (dnsmasq_command))
         # print dnsmasq_command
 
     # Get the dhcp server matches config
@@ -332,11 +336,11 @@ def dhcp_tftp_get_config():
         if ovs_rec.option_value and ovs_rec.option_value is not None:
             match_options = match_options + ',' + ovs_rec.option_value[0]
 
-        vlog.dbg("dhcp_tftp_debug - dhcp match %s " \
-                     % (match_options))
+        vlog.dbg("dhcp_tftp_debug - dhcp match %s "
+                 % (match_options))
         dnsmasq_command = dnsmasq_command + ' --dhcp-match=' + match_options
-        vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s " \
-                     % (dnsmasq_command))
+        vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s "
+                 % (dnsmasq_command))
         # print dnsmasq_command
 
     # Get the dhcp server bootp config
@@ -345,25 +349,25 @@ def dhcp_tftp_get_config():
             bootp_options = ""
             bootp = {}
             bootp = ovs_rec.bootp
-            for key,value in bootp.iteritems():
+            for key, value in bootp.iteritems():
                 bootp_options = ""
                 if key == 'no_matching_tag':
                     bootp_options = value
                 else:
                     bootp_options = 'tag:' + key + ',' + value
 
-                vlog.dbg("dhcp_tftp_debug - dhcp boot %s " \
-                                  % (bootp_options))
+                vlog.dbg("dhcp_tftp_debug - dhcp boot %s "
+                         % (bootp_options))
                 dnsmasq_command = dnsmasq_command + ' --dhcp-boot=' + \
-                                  bootp_options
-                vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s " \
-                          % (dnsmasq_command))
+                    bootp_options
+                vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s "
+                         % (dnsmasq_command))
         # print dnsmasq_command
 
     # Get the tftp server config
     for ovs_rec in idl.tables[SYSTEM_TABLE].rows.itervalues():
         if ovs_rec.other_config and ovs_rec.other_config is not None:
-            for key,value in ovs_rec.other_config.iteritems():
+            for key, value in ovs_rec.other_config.iteritems():
                 if key == 'tftp_server_enable':
                     if value and value == 'true':
                         dnsmasq_command = dnsmasq_command + ' --enable-tftp '
@@ -375,13 +379,12 @@ def dhcp_tftp_get_config():
                         dnsmasq_command = dnsmasq_command + ' --tftp-root=' + \
                                           value
 
-                vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s " \
-                          % (dnsmasq_command))
+                vlog.dbg("dhcp_tftp_debug - dnsmasq cmd %s "
+                         % (dnsmasq_command))
                 # print dnsmasq_command
 
-
-    vlog.info("dhcp_tftp_debug - dnsmasq_command(2) %s " \
-                     % (dnsmasq_command))
+    vlog.info("dhcp_tftp_debug - dnsmasq_command(2) %s "
+              % (dnsmasq_command))
 
 
 # ------------------ dnsmasq_start_process() ----------
@@ -392,8 +395,8 @@ def dnsmasq_start_process():
 
     dnsmasq_process = None
 
-    vlog.info("dhcp_tftp_debug - dnsmasq_command(3) %s " \
-                     % (dnsmasq_command))
+    vlog.info("dhcp_tftp_debug - dnsmasq_command(3) %s "
+              % (dnsmasq_command))
 
     dnsmasq_process = subprocess.Popen(dnsmasq_command,
                                        stdout=subprocess.PIPE,
@@ -403,8 +406,8 @@ def dnsmasq_start_process():
     print err
     if err != "":
         vlog.emer("%s" % (err))
-        vlog.emer("Error with config, dnsmasq failed, command %s"  % \
-                   (dnsmasq_command))
+        vlog.emer("Error with config, dnsmasq failed, command %s" %
+                  (dnsmasq_command))
     else:
         vlog.info("dhcp_tftp_debug - dnsmasq started")
 
@@ -419,8 +422,8 @@ def dnsmasq_run():
     idl.run()
 
     if seqno != idl.change_seqno:
-        vlog.info("dhcp_tftp_debug - seqno change from %d to %d " % \
-                   (seqno, idl.change_seqno))
+        vlog.info("dhcp_tftp_debug - seqno change from %d to %d "
+                  % (seqno, idl.change_seqno))
         seqno = idl.change_seqno
 
         # Check if system is configured and startup config is restored
@@ -435,7 +438,7 @@ def dnsmasq_run():
             dnsmasq_started = True
 
 
-#--------------------- dnsmasq_restart() --------------
+# --------------------- dnsmasq_restart() --------------
 def dnsmasq_restart():
 
     global idl
@@ -461,7 +464,6 @@ def dnsmasq_restart():
 
     # Start the dnsmasq process
     dnsmasq_start_process()
-
 
 
 # ------------------ main() ----------------
@@ -499,7 +501,7 @@ def main():
         ovs.util.ovs_fatal(error, "dhcp_tftp_helper: could not create "
                                   "unix-ctl server", vlog)
 
-    while dnsmasq_started == False:
+    while dnsmasq_started is False:
         dnsmasq_run()
         sleep(2)
 
@@ -511,7 +513,7 @@ def main():
         unixctl_server.run()
 
         if exiting:
-            break;
+            break
 
         if seqno == idl.change_seqno:
             poller = ovs.poller.Poller()
@@ -519,10 +521,10 @@ def main():
             idl.wait(poller)
             poller.block()
 
-        idl.run() # Better reload the tables
+        idl.run()  # Better reload the tables
 
-        vlog.dbg("dhcp_tftp_debug main - seqno change from %d to %d " % \
-                  (seqno, idl.change_seqno))
+        vlog.dbg("dhcp_tftp_debug main - seqno change from %d to %d "
+                 % (seqno, idl.change_seqno))
         if seqno != idl.change_seqno:
             '''
             OPS_TODO:

@@ -20,6 +20,7 @@ setup(
     version='1.0',
     py_modules=['ops_dhcp_tftp', 'dhcp_leases', 'dhcp_lease_db'],
     entry_points={
-        'console_scripts': ['ops_dhcp_tftp = ops_dhcp_tftp:main', 'dhcp_leases = dhcp_leases:main']
+        'console_scripts': ['ops_dhcp_tftp = ops_dhcp_tftp:main',
+                            'dhcp_leases = dhcp_leases:main']
     }
 )

@@ -27,13 +27,15 @@ from dhcp_lease_db import DHCPLeaseDB
 
 vlog = ovs.vlog.Vlog("dhcp_leases")
 
+
 def print_to_stdout(dhcp_lease_entry):
     print "%s %s %s %s %s" % \
-           (dhcp_lease_entry["expiry_time"], \
-            dhcp_lease_entry["mac_address"], \
-            dhcp_lease_entry["ip_address"], \
-            dhcp_lease_entry["client_hostname"], \
+           (dhcp_lease_entry["expiry_time"],
+            dhcp_lease_entry["mac_address"],
+            dhcp_lease_entry["ip_address"],
+            dhcp_lease_entry["client_hostname"],
             dhcp_lease_entry["client_id"])
+
 
 def dhcp_leases_show():
 
@@ -44,24 +46,25 @@ def dhcp_leases_show():
     # OPS_TODO:
     # Print dhcp_leases.idl.change_seqno
     for ovs_rec in dhcp_leases.idl.tables["DHCP_Lease"].rows.itervalues():
-        dhcp_lease_entry = {"expiry_time":"*", "mac_address":"*",
-                            "ip_address":"*", "client_hostname":"*",
-                            "client_id":"*"}
+        dhcp_lease_entry = {"expiry_time": "*", "mac_address": "*",
+                            "ip_address": "*", "client_hostname": "*",
+                            "client_id": "*"}
 
-        if ovs_rec.expiry_time and ovs_rec.expiry_time != None:
+        if ovs_rec.expiry_time and ovs_rec.expiry_time is not None:
             dhcp_lease_entry["expiry_time"] = ovs_rec.expiry_time
-        if ovs_rec.mac_address and ovs_rec.mac_address != None:
+        if ovs_rec.mac_address and ovs_rec.mac_address is not None:
             dhcp_lease_entry["mac_address"] = ovs_rec.mac_address
-        if ovs_rec.ip_address and ovs_rec.ip_address != None:
+        if ovs_rec.ip_address and ovs_rec.ip_address is not None:
             dhcp_lease_entry["ip_address"] = ovs_rec.ip_address
-        if ovs_rec.client_hostname and ovs_rec.client_hostname != None:
+        if ovs_rec.client_hostname and ovs_rec.client_hostname is not None:
             dhcp_lease_entry["client_hostname"] = ovs_rec.client_hostname[0]
-        if ovs_rec.client_id and ovs_rec.client_id != None:
+        if ovs_rec.client_id and ovs_rec.client_id is not None:
             dhcp_lease_entry["client_id"] = ovs_rec.client_id[0]
 
         print_to_stdout(dhcp_lease_entry)
 
     dhcp_leases.close()
+
 
 def dhcp_leases_add(dhcp_lease_entry):
 
@@ -74,6 +77,7 @@ def dhcp_leases_add(dhcp_lease_entry):
 
     dhcp_leases.close()
 
+
 def dhcp_leases_update(dhcp_lease_entry):
 
     dhcp_leases = DHCPLeaseDB()
@@ -85,6 +89,7 @@ def dhcp_leases_update(dhcp_lease_entry):
         vlog.err("dhcp_leases update_row failed")
 
     dhcp_leases.close()
+
 
 def dhcp_leases_delete(dhcp_lease_entry):
 
@@ -100,8 +105,9 @@ def dhcp_leases_delete(dhcp_lease_entry):
 
 def main():
 
-    dhcp_lease_entry = {"expiry_time":"*", "mac_address":"*", "ip_address":"*",
-                        "client_hostname":"*", "client_id":"*"}
+    dhcp_lease_entry = {"expiry_time": "*", "mac_address": "*",
+                        "ip_address": "*",
+                        "client_hostname": "*", "client_id": "*"}
 
     argv = sys.argv
     num_args = len(argv)
@@ -162,13 +168,13 @@ def main():
     elif command == "tftp":
         sys.exit()
     else:
-        vlog.err("Invalid command %s to dhcp_leases script.... Exiting" \
-              % (command))
+        vlog.err("Invalid command %s to dhcp_leases script.... Exiting"
+                 % (command))
         sys.exit()
 
 
 if __name__ == '__main__':
-    try :
+    try:
         main()
         sys.exit()
     except error.Error, e:

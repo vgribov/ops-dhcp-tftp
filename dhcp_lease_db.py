@@ -43,6 +43,7 @@ IP_ADDR = "ip_address"
 CLIENT_HOSTNAME = "client_hostname"
 CLIENT_ID = "client_id"
 
+
 class DHCPLeaseDB(object):
     def __init__(self, location=None):
         '''
@@ -51,7 +52,8 @@ class DHCPLeaseDB(object):
         '''
         self.idl = None
         self.txn = None
-        self.schema_helper = ovs.db.idl.SchemaHelper(location=dhcp_lease_db_schema)
+        self.schema_helper = ovs.db.idl.SchemaHelper(
+            location=dhcp_lease_db_schema)
         self.schema_helper.register_table(DHCP_LEASES_TABLE)
 
         self.idl = ovs.db.idl.Idl(def_db, self.schema_helper)
@@ -98,7 +100,6 @@ class DHCPLeaseDB(object):
 
         if entry[CLIENT_ID] != None:
             setattr(row, CLIENT_ID, entry[CLIENT_ID])
-
 
     def insert_row(self, entry):
         '''
@@ -151,4 +152,4 @@ class DHCPLeaseDB(object):
         return row_found, status
 
     def close(self):
-         self.idl.close()
+        self.idl.close()
