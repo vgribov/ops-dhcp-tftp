@@ -3548,7 +3548,7 @@ cli_pre_init(void)
     vtysh_install_default (TFTP_SERVER_NODE);
     dhcp_tftp_ovsdb_init();
 
-    /* Register sh run context with vtysh */
+    /* Register show running-config context with vtysh */
     retval = install_show_run_config_context(e_vtysh_dhcp_tftp_context,
                                              NULL, NULL, NULL);
     if(e_vtysh_ok != retval)
@@ -3558,41 +3558,20 @@ cli_pre_init(void)
         assert(0);
         return;
     }
-
-    retval = install_show_run_config_subcontext(e_vtysh_dhcp_tftp_context,
-                                  e_vtysh_dhcp_tftp_context_dhcp,
-                                  &vtysh_dhcp_tftp_context_dhcp_clientcallback,
-                                  NULL, NULL);
-    if (e_vtysh_ok != retval) {
-        vtysh_ovsdb_config_logmsg(VTYSH_OVSDB_CONFIG_ERR,
-                    "dhcp-tftp context unable to add dhcp client callback");
-        assert(0);
-        return;
-    }
-
-    retval = install_show_run_config_subcontext(e_vtysh_dhcp_tftp_context,
-                                  e_vtysh_dhcp_tftp_context_tftp,
-                                  &vtysh_dhcp_tftp_context_tftp_clientcallback,
-                                  NULL, NULL);
-    if (e_vtysh_ok != retval) {
-        vtysh_ovsdb_config_logmsg(VTYSH_OVSDB_CONFIG_ERR,
-                       "dhcp-tftp context unable to add tftp client callback");
-        assert(0);
-        return;
-    }
 }
 /* Install  DHCP-TFTP related vty command elements. */
 void
 cli_post_init(void)
 {
+    vtysh_ret_val retval = e_vtysh_error;
 
-   install_element (CONFIG_NODE, &vtysh_dhcp_server_cmd);
-   install_element (DHCP_SERVER_NODE, &config_exit_cmd);
-   install_element (DHCP_SERVER_NODE, &config_end_cmd);
+    install_element (CONFIG_NODE, &vtysh_dhcp_server_cmd);
+    install_element (DHCP_SERVER_NODE, &config_exit_cmd);
+    install_element (DHCP_SERVER_NODE, &config_end_cmd);
 
-   install_element (CONFIG_NODE, &vtysh_tftp_server_cmd);
-   install_element (TFTP_SERVER_NODE, &config_exit_cmd);
-   install_element (TFTP_SERVER_NODE, &config_end_cmd);
+    install_element (CONFIG_NODE, &vtysh_tftp_server_cmd);
+    install_element (TFTP_SERVER_NODE, &config_exit_cmd);
+    install_element (TFTP_SERVER_NODE, &config_end_cmd);
     install_element (ENABLE_NODE, &cli_dhcp_leases_show_cmd);
 
     install_element(DHCP_SERVER_NODE, &cli_dhcp_server_range_add_cmd);
@@ -3629,8 +3608,26 @@ cli_post_init(void)
     install_element(ENABLE_NODE, &cli_show_dhcp_server_cmd);
     install_element(ENABLE_NODE, &cli_show_tftp_server_cmd);
 
-    /* register vtysh context table client callbacks */
-    vtysh_init_dhcp_tftp_context_clients();
-    return;
+    retval = install_show_run_config_subcontext(e_vtysh_dhcp_tftp_context,
+                                  e_vtysh_dhcp_tftp_context_dhcp,
+                                  &vtysh_dhcp_tftp_context_dhcp_clientcallback,
+                                  NULL, NULL);
+    if (e_vtysh_ok != retval) {
+        vtysh_ovsdb_config_logmsg(VTYSH_OVSDB_CONFIG_ERR,
+                    "dhcp-tftp context unable to add dhcp client callback");
+        assert(0);
+        return;
+    }
 
+    retval = install_show_run_config_subcontext(e_vtysh_dhcp_tftp_context,
+                                  e_vtysh_dhcp_tftp_context_tftp,
+                                  &vtysh_dhcp_tftp_context_tftp_clientcallback,
+                                  NULL, NULL);
+    if (e_vtysh_ok != retval) {
+        vtysh_ovsdb_config_logmsg(VTYSH_OVSDB_CONFIG_ERR,
+                       "dhcp-tftp context unable to add tftp client callback");
+        assert(0);
+        return;
+    }
+    return;
 }

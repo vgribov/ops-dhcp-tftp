@@ -34,9 +34,6 @@
 #include "vtysh_ovsdb_dhcp_tftp_context.h"
 #include "openswitch-dflt.h"
 
-char dhcpclientname[] = "vtysh_dhcp_tftp_context_dhcp_clientcallback";
-char tftpclientname[] = "vtysh_dhcp_tftp_context_tftp_clientcallback";
-
 /*-----------------------------------------------------------------------------
 | Function: vtysh_ovsdb_dhcp_tftp_cli_print
 | Responsibility : prints the command in given format
@@ -441,51 +438,6 @@ vtysh_dhcp_tftp_context_tftp_clientcallback(void *p_private)
 
     if (tftp_flag) {
         vtysh_ovsdb_dhcp_tftp_cli_print(p_msg, "\n");
-    }
-
-    return e_vtysh_ok;
-}
-
-
-
-/*-----------------------------------------------------------------------------
-| Function : vtysh_init_dhcp_tftp_context_clients
-| Responsibility : registers the client callbacks for dhcp-tftp context
-| Parameters :
-| Return :
------------------------------------------------------------------------------*/
-int
-vtysh_init_dhcp_tftp_context_clients(void)
-{
-    vtysh_context_client client;
-    vtysh_ret_val retval = e_vtysh_error;
-
-    client.p_client_name = dhcpclientname;
-    client.client_id = e_vtysh_dhcp_tftp_context_dhcp;
-    client.p_callback = &vtysh_dhcp_tftp_context_dhcp_clientcallback;
-    retval = vtysh_context_addclient(e_vtysh_dhcp_tftp_context,
-                                     e_vtysh_dhcp_tftp_context_dhcp,
-                                     &client);
-    if (e_vtysh_ok != retval) {
-        vtysh_ovsdb_config_logmsg(VTYSH_OVSDB_CONFIG_ERR,
-                    "dhcp-tftpcontext unable to add dhcp client callback");
-        assert(0);
-        return retval;
-    }
-
-    retval = e_vtysh_error;
-    memset(&client, 0, sizeof(vtysh_context_client));
-    client.p_client_name = tftpclientname;
-    client.client_id = e_vtysh_dhcp_tftp_context_tftp;
-    client.p_callback = &vtysh_dhcp_tftp_context_tftp_clientcallback;
-    retval = vtysh_context_addclient(e_vtysh_dhcp_tftp_context,
-                                     e_vtysh_dhcp_tftp_context_tftp,
-                                     &client);
-    if (e_vtysh_ok != retval) {
-        vtysh_ovsdb_config_logmsg(VTYSH_OVSDB_CONFIG_ERR,
-                        "dhcp-tftp context unable to tftp client callback");
-        assert(0);
-        return retval;
     }
 
     return e_vtysh_ok;

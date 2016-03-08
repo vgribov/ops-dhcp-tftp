@@ -27,7 +27,6 @@
 #ifndef VTYSH_OVSDB_DHCP_TFTP_CONTEXT_H
 #define VTYSH_OVSDB_DHCP_TFTP_CONTEXT_H
 
-int vtysh_init_dhcp_tftp_context_clients(void);
 vtysh_ret_val vtysh_dhcp_tftp_context_dhcp_clientcallback (void *p_private);
 vtysh_ret_val vtysh_dhcp_tftp_context_tftp_clientcallback (void *p_private);
 
