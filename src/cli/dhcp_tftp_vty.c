@@ -662,36 +662,31 @@ static int show_tftp_server(void)
                   VTY_NEWLINE);
 
     buff = (char *)smap_get(&row->other_config,"tftp_server_enable");
-    if (buff == NULL) {
-        vty_out(vty, "TFTP server : Disabled%s", VTY_NEWLINE);
-        vty_out(vty, "%s", VTY_NEWLINE);
-
-        return CMD_SUCCESS;
+    if (buff != NULL && strcmp(buff, "true") == 0) {
+        vty_out(vty, "TFTP server : Enabled%s", VTY_NEWLINE);
     } else {
-        if (strcmp(buff, "true") == 0) {
-            vty_out(vty, "TFTP server : Enabled%s", VTY_NEWLINE);
-        } else {
-            vty_out(vty, "TFTP server : Disabled%s", VTY_NEWLINE);
-        }
-        buff = NULL;
-        buff = (char *)smap_get(&row->other_config,"tftp_server_secure");
-        if (buff != NULL && strcmp(buff, "true") == 0) {
-            vty_out(vty, "TFTP server secure mode : Enabled%s",
-                          VTY_NEWLINE);
-        } else {
-            vty_out(vty, "TFTP server secure mode : Disabled%s",
-                          VTY_NEWLINE);
-        }
 
-        buff = (char *)smap_get(&row->other_config,"tftp_server_path");
-        if (buff != NULL) {
-            vty_out(vty, "TFTP server file path : %s%s",
-                          buff, VTY_NEWLINE);
-        } else {
-            vty_out(vty, "TFTP server file path : Not configured%s",
-                          VTY_NEWLINE);
-        }
+        vty_out(vty, "TFTP server : Disabled%s", VTY_NEWLINE);
+    }
 
+    buff = NULL;
+    buff = (char *)smap_get(&row->other_config,"tftp_server_secure");
+    if (buff != NULL && strcmp(buff, "true") == 0) {
+        vty_out(vty, "TFTP server secure mode : Enabled%s",
+                      VTY_NEWLINE);
+    } else {
+        vty_out(vty, "TFTP server secure mode : Disabled%s",
+                      VTY_NEWLINE);
+    }
+
+    buff = NULL;
+    buff = (char *)smap_get(&row->other_config,"tftp_server_path");
+    if (buff != NULL) {
+        vty_out(vty, "TFTP server file path : %s%s",
+                      buff, VTY_NEWLINE);
+    } else {
+        vty_out(vty, "TFTP server file path : Not configured%s",
+                      VTY_NEWLINE);
     }
 
     vty_out(vty, "%s", VTY_NEWLINE);
