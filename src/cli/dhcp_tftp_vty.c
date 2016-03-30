@@ -2122,6 +2122,8 @@ static int dhcp_server_add_range(dhcp_srv_range_params_t *range_params)
         ovsrec_vrf_set_dhcp_server(vrf_row, dhcp_server_row);
     } else {
         dhcp_server_row = vrf_row->dhcp_server;
+
+        /* Check if range config with same name is already configured */
         for (i = 0; i < dhcp_server_row->n_ranges; i++) {
             dhcpsrv_range_temp = dhcp_server_row->ranges[i];
             if (strcmp(dhcpsrv_range_temp->name, range_params->name) == 0) {
@@ -2136,6 +2138,19 @@ static int dhcp_server_add_range(dhcp_srv_range_params_t *range_params)
                 cli_do_config_abort(status_txn);
                 return (CMD_SUCCESS);
             }
+        }
+
+        /* Check if max limit of ranges is already configured */
+        if (dhcp_server_row->n_ranges >= MAX_DHCP_RANGES_CONFIG) {
+            vty_out(vty, "Maximum limit for dhcp ranges config (%lu) "
+                         "is already configured. Please delete any unused "
+                         "dhcp range and then add new range.%s",
+                          dhcp_server_row->n_ranges, VTY_NEWLINE);
+            VLOG_ERR("Maximum limit for dhcp ranges config (%lu) "
+                     "is already configured.",
+                      dhcp_server_row->n_ranges);
+            cli_do_config_abort(status_txn);
+            return (CMD_SUCCESS);
         }
 
     }

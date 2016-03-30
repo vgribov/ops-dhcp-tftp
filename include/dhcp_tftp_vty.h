@@ -31,6 +31,8 @@
 #define MAX_TAG_LENGTH 32
 #define MAX_MAC_LENGTH 17
 
+#define MAX_DHCP_RANGES_CONFIG 200
+
 #define MAX_DHCP_CONFIG_NAME_LENGTH 15
 typedef struct dhcp_srv_range_params_s {
     // OPS_TODO:
