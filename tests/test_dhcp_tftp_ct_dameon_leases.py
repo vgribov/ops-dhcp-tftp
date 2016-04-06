@@ -896,6 +896,7 @@ class dhcp_tftpDaemonLeasestest(OpsVsiTest):
         return True
 
 
+@pytest.mark.skipif(True, reason="Disabling old tests")
 class Test_vtysh_dhcp_tftp:
 
     def setup_class(cls):
