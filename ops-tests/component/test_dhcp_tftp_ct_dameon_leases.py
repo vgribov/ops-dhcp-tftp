@@ -44,7 +44,7 @@ def test_vtysh_dhcp_tftp(topology, step):
         "255.0.0.0" in dump and "tag1,tag2,tag3" in dump and \
         "tag" in dump and "10.255.255.255" in dump and "60" in dump
 
-    sleep(10)
+    sleep(20)
     dump_bash = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "10.0.0.1" in dump_bash and "10.0.0.254" in dump_bash and \
         "255.0.0.0" in dump_bash and "tag1" in dump_bash and \
@@ -98,7 +98,7 @@ def test_vtysh_dhcp_tftp(topology, step):
     assert "Router" in dump and "10.20.10.1" in dump and "ops_match_name" \
         in dump
 
-    sleep(10)
+    sleep(20)
     dump_bash = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "Router" in dump_bash and "10.20.10.1" in dump_bash and \
         "ops_match_name" in dump_bash
@@ -110,7 +110,7 @@ def test_vtysh_dhcp_tftp(topology, step):
     dump = sw1("do show dhcp-server")
     assert "3" in dump and "10.20.20.10" in dump and "ops_match_num" in dump
 
-    sleep(10)
+    sleep(20)
     dump_bash = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "3" in dump_bash and "10.20.20.10" in dump_bash and \
         "ops_match_num" in dump_bash
@@ -139,7 +139,7 @@ def test_vtysh_dhcp_tftp(topology, step):
             range_created = True
     assert range_created is False
 
-    sleep(10)
+    sleep(20)
     dump_bash = sw1("ps -ef | grep dnsmasq", shell='bash')
     range_in_use = False
     if "10.0.0.1" in dump_bash and "10.0.0.254" in dump_bash and \
@@ -159,7 +159,7 @@ def test_vtysh_dhcp_tftp(topology, step):
         and "testid" not in dump and "tag1,tag2,tag3" not in dump and \
         "testname" not in dump and "60" not in dump
 
-    sleep(10)
+    sleep(20)
     dump_bash = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "10.0.0.100" not in dump_bash and "aa:bb:cc:dd:ee:ff" not in \
         dump_bash and "testid" not in dump_bash and "tag1,tag2,tag3" not \
@@ -177,7 +177,7 @@ def test_vtysh_dhcp_tftp(topology, step):
             option_created = True
     assert option_created is False
 
-    sleep(10)
+    sleep(20)
     dump_bash = sw1("ps -ef | grep dnsmasq", shell='bash')
     option_in_use = False
     if "Router" in dump and "10.11.12.1" in dump \
@@ -196,7 +196,7 @@ def test_vtysh_dhcp_tftp(topology, step):
             option_created = True
     assert option_created is False
 
-    sleep(10)
+    sleep(20)
     dump_bash = sw1("ps -ef | grep dnsmasq", shell='bash')
     option_in_use = False
     if "3" in dump_bash and "10.10.10.1" in dump_bash and \
@@ -212,7 +212,7 @@ def test_vtysh_dhcp_tftp(topology, step):
     assert "Router" not in dump and "10.20.10.1" not in dump and \
         "ops_match_name" not in dump
 
-    sleep(10)
+    sleep(20)
     dump_bash = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "Router" not in dump and "10.20.10.1" not in dump and \
         "ops_match_name" not in dump
@@ -225,7 +225,7 @@ def test_vtysh_dhcp_tftp(topology, step):
     assert "3" not in dump and "10.20.20.10" not in dump and \
         "ops_match_num" not in dump
 
-    sleep(10)
+    sleep(20)
     dump_bash = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "3" not in dump and "10.20.20.10" not in dump and \
         "ops_match_num" not in dump
@@ -236,7 +236,7 @@ def test_vtysh_dhcp_tftp(topology, step):
     dump = sw1("do show dhcp-server")
     assert "/tmp/testfile" not in dump and "ops_bootp" not in dump
 
-    sleep(10)
+    sleep(20)
     dump_bash = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "/tmp/testfile" not in dump_bash and "ops_bootp" not \
         in dump_bash
@@ -248,7 +248,7 @@ def test_vtysh_dhcp_tftp(topology, step):
     dump = sw1("do show tftp-server")
     assert "TFTP server : Enabled" in dump
 
-    sleep(10)
+    sleep(20)
     dump = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "--enable-tftp" in dump
 
@@ -257,7 +257,7 @@ def test_vtysh_dhcp_tftp(topology, step):
     dump = sw1("do show tftp-server")
     assert "TFTP server secure mode : Enabled" in dump
 
-    sleep(10)
+    sleep(20)
     dump = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "--tftp-secure" in dump
 
@@ -266,7 +266,7 @@ def test_vtysh_dhcp_tftp(topology, step):
     dump = sw1("do show tftp-server")
     assert "TFTP server file path : /tmp/" in dump
 
-    sleep(10)
+    sleep(20)
     dump = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "--tftp-root=/tmp/" in dump
 
@@ -275,7 +275,7 @@ def test_vtysh_dhcp_tftp(topology, step):
     dump = sw1("do show tftp-server")
     assert "TFTP server : Disabled" in dump
 
-    sleep(10)
+    sleep(20)
     dump = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "--enable-tftp" not in dump
 
@@ -284,7 +284,7 @@ def test_vtysh_dhcp_tftp(topology, step):
     dump = sw1("do show tftp-server")
     assert "TFTP server secure mode : Disabled" in dump
 
-    sleep(10)
+    sleep(20)
     dump = sw1("ps -ef | grep dnsmasq", shell='bash')
     assert "--tftp-secure" not in dump
 
