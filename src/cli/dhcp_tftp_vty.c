@@ -256,8 +256,8 @@ static int show_dhcp_leases(void)
     leasestream = popen(cmd_buff, "r");
 
     if (leasestream) {
-        while (fscanf(leasestream, "%s", time)!= EOF) {
-            if (fscanf(leasestream, "%s %s %s %s",
+        while (fscanf(leasestream, "%255s", time)!= EOF) {
+            if (fscanf(leasestream, "%255s %255s %255s %1023s",
                        mac_addr, ip_addr, hostname, client_id) != 4) {
                 /*
                  * We should always have mac_addr/DUID, ip_addr, hostname and
