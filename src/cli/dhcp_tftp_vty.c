@@ -78,7 +78,7 @@ bool is_tag_or_name_valid (char *tag)
 
 bool is_tags_valid ( char *tags_list)
 {
-    char *list=(char *)malloc(strlen(tags_list));
+    char *list = xmalloc(strlen(tags_list) + 1);
     char *token = NULL;
 
     strcpy(list,tags_list);
@@ -150,7 +150,7 @@ bool is_valid_mac_address (char *mac_addr)
 
 bool  is_mac_addresses_valid (char *mac_addresses_list)
 {
-    char *list=(char *)malloc(strlen(mac_addresses_list));
+    char *list = xmalloc(strlen(mac_addresses_list) + 1);
     char *token = NULL;
 
     strcpy(list, mac_addresses_list);
